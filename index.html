@@ -16,7 +16,8 @@
 
             const symbolUpperCase = symbol.toUpperCase();
             const resolution = parseInt(res, 10);
-            const filePath = `/icons/${resolution}/${symbolUpperCase}.png`;
+            const baseUrl = 'https://violetesfenaj.github.io/CryptoLogo/icons/';
+            const filePath = `${baseUrl}${resolution}/${symbolUpperCase}.png`;
 
             fetch(filePath)
                 .then(response => {
