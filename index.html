@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crypto Logo Project</title>
+    <script>
+        function handleRequest() {
+            const url = window.location.href;
+            const parts = url.split('/');
+            const resolution = parts[2];
+            const symbol = parts[3];
+
+            const symbolUpperCase = symbol.toUpperCase();
+            const filePath = `/icons/${resolution}/${symbolUpperCase}.png`;
+
+            fetch(filePath)
+                .then(response => {
+                    if (response.ok) {
+                        return response.blob();
+                    } else {
+                        throw new Error('File not found');
+                    }
+                })
+                .then(blob => {
+                    const objectURL = URL.createObjectURL(blob);
+                    document.body.innerHTML = `<img src="${objectURL}" alt="${symbolUpperCase}">`;
+                })
+                .catch(() => {
+                    document.body.innerHTML = '<p>404: File not found</p>';
+                });
+        }
+
+        window.addEventListener('load', handleRequest);
+    </script>
+</head>
+<body>
+    <h1>Crypto Logo Project</h1>
+    <p>Enter the URL in the format /icons/{resolution}/{symbol} to display the logo.</p>
+</body>
+</html>
