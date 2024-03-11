@@ -4,10 +4,43 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Crypto Logo Project</title>
+    <script>
+        function handleRequest() {
+            const symbol = new URLSearchParams(window.location.search).get('symbol');
+            const res = new URLSearchParams(window.location.search).get('res');
+
+            if (!symbol || !res) {
+                document.body.innerHTML = '<p>Please provide both symbol and resolution as query parameters.</p>';
+                return;
+            }
+
+            const symbolUpperCase = symbol.toUpperCase();
+            const resolution = parseInt(res, 10);
+            const baseUrl = 'https://violetesfenaj.github.io/CryptoLogo/icons/';
+            const filePath = `${baseUrl}${resolution}/${symbolUpperCase}.png`;
+
+            fetch(filePath)
+                .then(response => {
+                    if (response.ok) {
+                        return response.blob();
+                    } else {
+                        throw new Error('File not found');
+                    }
+                })
+                .then(blob => {
+                    const objectURL = URL.createObjectURL(blob);
+                    window.location.href = objectURL;
+                })
+                .catch(() => {
+                    document.body.innerHTML = '<p>404: File not found</p>';
+                });
+        }
+
+        window.addEventListener('load', handleRequest);
+    </script>
 </head>
 <body>
     <h1>Crypto Logo Project</h1>
     <p>Enter the URL with query parameters symbol and res (e.g., ?symbol=eth&res=128) to display the logo.</p>
-    <p>Usage example: <code>mysite.com/icons.php?symbol=eth&res=128</code></p>
 </body>
 </html>
