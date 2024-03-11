@@ -6,12 +6,16 @@
     <title>Crypto Logo Project</title>
     <script>
         function handleRequest() {
-            const url = window.location.href;
-            const parts = url.split('/');
-            const resolution = parts[2];
-            const symbol = parts[3];
+            const symbol = new URLSearchParams(window.location.search).get('symbol');
+            const res = new URLSearchParams(window.location.search).get('res');
+
+            if (!symbol || !res) {
+                document.body.innerHTML = '<p>Please provide both symbol and resolution as query parameters.</p>';
+                return;
+            }
 
             const symbolUpperCase = symbol.toUpperCase();
+            const resolution = parseInt(res, 10);
             const filePath = `/icons/${resolution}/${symbolUpperCase}.png`;
 
             fetch(filePath)
@@ -36,6 +40,6 @@
 </head>
 <body>
     <h1>Crypto Logo Project</h1>
-    <p>Enter the URL in the format /icons/{resolution}/{symbol} to display the logo.</p>
+    <p>Enter the URL with query parameters symbol and res (e.g., ?symbol=eth&res=128) to display the logo.</p>
 </body>
 </html>
